@@ -59,8 +59,23 @@ function buildBoard(){
     deTile.classList = "allTile " + boardArr[i].color+'Tile';
     deTile.id = boardArr[i].tileLocation + "Tile";
     app.appendChild(deTile);
-    console.log(deTile);
   }
+}
+
+function initPieceLoc(arr){
+  for(var i = 0; i < arr.length; i++){
+    buildPiece(arr[i]);
+  }
+}
+
+function buildPiece(piece){
+
+  const tmpPce = document.createElement('div');
+  tmpPce.classList = "allPiece " + piece.color + "Piece";
+  tmpPce.id = piece.tileLocation + 'Piece';
+  document.getElementById(piece.tileLocation+'Tile').appendChild(tmpPce);
+
+  console.log(tmpPce);
 }
 
 (function init(){
@@ -68,6 +83,6 @@ function buildBoard(){
   createColorArr('light');
   createColorArr('dark');
   buildBoard();
+  initPieceLoc(lightArr);
+  initPieceLoc(darkArr);
 })()
-
-console.log(boardArr);

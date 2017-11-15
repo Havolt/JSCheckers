@@ -22,3 +22,18 @@ html, body{
 .lightTile{
   background-color: #E8D0AA;
 }
+
+.allPiece{
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  margin: 11px auto;
+}
+
+.darkPiece{
+  background-color: #512D28;
+}
+
+.lightPiece{
+  background-color: #F4C242;
+}
