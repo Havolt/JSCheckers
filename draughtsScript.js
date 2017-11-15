@@ -1,14 +1,28 @@
 
 const tileAmt = 8;
+let boardArr = [];
 
-function createBoard(){
+function createBoardArr(){
 
-  for(var i = 1; i <= tileAmt; i++){
-    console.log(i);
+  for(var i = tileAmt; i >= 1; i--){
+
+    for(var j = 0; j < tileAmt; j++){
+
+      const tmpObj = new Object;
+      tmpObj.empty = true;
+      tmpObj.x = i;
+      tmpObj.y = String.fromCharCode(65+j);
+      tmpObj.tileLocation = tmpObj.x + tmpObj.y
+
+      boardArr.push(tmpObj);
+    }
   }
 
 }
 
 (function init(){
-  createBoard();
+  createBoardArr();
+
 })()
+
+console.log(boardArr);
