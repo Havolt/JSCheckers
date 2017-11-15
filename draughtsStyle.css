@@ -4,4 +4,18 @@ html, body{
 
 #app{
   margin: 0 auto;
+  width: 640px;
+}
+
+.allTiles{
+  width: 80px;
+  height: 80px;
+}
+
+.darkTile{
+  background-color: #A67D5D;
+}
+
+.lightTile{
+  background-color: #E8D0AA;
 }
