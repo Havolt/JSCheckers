@@ -107,15 +107,20 @@ function highlightMove(pieceInfo){
   else{ document.getElementById(pieceInfo.tileLocation+'Piece').style.boxShadow="none"}
 
   for(var i = 0; i < boardArr.length; i++){
+    let holder = i;
     if(!pieceInfo.crowned){
       if((boardArr[i].x == pieceInfo.x+direction) && (boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)-1 ||
        boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+1) && boardArr[i].empty){
         if(!pieceSelectedBool){
           highlightedTiles.push(boardArr[i]);
           document.getElementById(boardArr[i].tileLocation+'Tile').style.backgroundColor="#848EA1";
-          document.getElementById(boardArr[i].tileLocation+'Tile').addEventListener('click', function(){updatePiece(pieceInfo, boardArr[i])})
+          console.log(boardArr[i]);
+          document.getElementById(boardArr[i].tileLocation+'Tile').addEventListener('click', function(){updatePiece(pieceInfo, boardArr[holder])})
         }else{
           document.getElementById(boardArr[i].tileLocation+'Tile').style.backgroundColor="#A67D5D";
+          el = document.getElementById(boardArr[i].tileLocation+'Tile');
+          elClone = el.cloneNode(true);
+          app.replaceChild(elClone, el);
           highlightedTiles = [];
         }
       }
@@ -124,7 +129,7 @@ function highlightMove(pieceInfo){
 }
 
 function updatePiece(checkerPos, tilePos){
-  console.log('yay');
+  console.log(tilePos);
 }
 
 (function init(){
