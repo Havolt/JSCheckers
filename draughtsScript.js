@@ -3,6 +3,13 @@ const tileAmt = 8;
 const initPieceAmt = 12;
 let runner;
 
+let whiteTurn = true;
+let direction;
+
+let pieceSelectedBool = false;
+let pieceSelectedInfo;
+
+
 //Arrays
 let boardArr = [];
 let lightArr = [];
@@ -72,10 +79,39 @@ function buildPiece(piece){
 
   const tmpPce = document.createElement('div');
   tmpPce.classList = "allPiece " + piece.color + "Piece";
+  if(piece.color == 'light'){tmpPce.style.cursor="pointer"}
   tmpPce.id = piece.tileLocation + 'Piece';
+  tmpPce.addEventListener('click', function(){movePiece(piece)})
   document.getElementById(piece.tileLocation+'Tile').appendChild(tmpPce);
 
-  console.log(tmpPce);
+}
+
+function movePiece(pieceInfo){
+
+  highlightMove(pieceInfo);
+  
+  if(pieceSelectedBool == false){pieceSelectedInfo = pieceInfo}
+  else{pieceSelectedInfo = undefined}
+  pieceSelectedBool = !pieceSelectedBool;
+}
+
+function highlightMove(pieceInfo){
+  console.log(pieceInfo);
+
+  if(pieceInfo.color == 'light'){ direction = 1 }
+  else{ direction = -1 }
+
+  for(var i = 0; i < boardArr.length; i++){
+
+
+    if(pieceInfo.color == 'light' && !pieceInfo.crowned){
+      if((boardArr[i].x == pieceInfo.x+direction) && (boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)-1 ||
+       boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+1) && boardArr[i].empty){
+        console.log(boardArr[i].y.charCodeAt(0));
+        document.getElementById(boardArr[i].tileLocation+'Tile').style.backgroundColor="#848EA1";
+      }
+    }
+  }
 }
 
 (function init(){
