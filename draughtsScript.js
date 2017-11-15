@@ -33,31 +33,41 @@ function createBoardArr(){
 
 function createColorArr(color){
 
-  if(color == 'light'){
-    runner = boardArr.length-1;
-  }
+  if(color == 'light'){ runner = boardArr.length-1}
+  else{ runner = 0;}
   for(var i = 0; i < initPieceAmt; i++){
     const tmpPce = new Object;
     tmpPce.val = "piece";
     tmpPce.color = color;
     tmpPce.crowned = false;
     while(!boardArr[runner].empty || !boardArr[runner].legalPlay){
-      runner--;
+      if(color == 'light'){ runner--}
+      else{ runner++}
     }
     tmpPce.tileLocation = boardArr[runner].tileLocation;
     tmpPce.x = boardArr[runner].x;
     tmpPce.y = boardArr[runner].y;
     boardArr[runner].empty = false;
-    lightArr.push(tmpPce);
+    if(color == 'light'){ lightArr.push(tmpPce);}
+    else{ darkArr.push(tmpPce);}
+  }
+}
 
-    console.log(tmpPce);
+function buildBoard(){
+  for(var i = 0; i < boardArr.length; i++){
+    const deTile = document.createElement('div');
+    deTile.classList = "allTile " + boardArr[i].color+'Tile';
+    deTile.id = boardArr[i].tileLocation + "Tile";
+    app.appendChild(deTile);
+    console.log(deTile);
   }
 }
 
 (function init(){
   createBoardArr();
   createColorArr('light');
-  //createColorArr('dark');
+  createColorArr('dark');
+  buildBoard();
 })()
 
 console.log(boardArr);
