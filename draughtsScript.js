@@ -14,6 +14,7 @@ let pieceSelectedInfo;
 let boardArr = [];
 let lightArr = [];
 let darkArr = [];
+let highlightedTiles = [];
 
 function createBoardArr(){
   for(var i = tileAmt; i >= 1; i--){
@@ -88,11 +89,13 @@ function buildPiece(piece){
 
 function movePiece(pieceInfo){
 
-  highlightMove(pieceInfo);
-  
-  if(pieceSelectedBool == false){pieceSelectedInfo = pieceInfo}
-  else{pieceSelectedInfo = undefined}
-  pieceSelectedBool = !pieceSelectedBool;
+  if(!pieceSelectedBool || pieceSelectedInfo == pieceInfo){
+    highlightMove(pieceInfo);
+
+    if(pieceSelectedBool == false){pieceSelectedInfo = pieceInfo}
+    else{pieceSelectedInfo = undefined}
+    pieceSelectedBool = !pieceSelectedBool;
+  }
 }
 
 function highlightMove(pieceInfo){
@@ -100,18 +103,28 @@ function highlightMove(pieceInfo){
 
   if(pieceInfo.color == 'light'){ direction = 1 }
   else{ direction = -1 }
+  if(!pieceSelectedBool){ document.getElementById(pieceInfo.tileLocation+'Piece').style.boxShadow="3px 3px 2px black" }
+  else{ document.getElementById(pieceInfo.tileLocation+'Piece').style.boxShadow="none"}
 
   for(var i = 0; i < boardArr.length; i++){
-
-
-    if(pieceInfo.color == 'light' && !pieceInfo.crowned){
+    if(!pieceInfo.crowned){
       if((boardArr[i].x == pieceInfo.x+direction) && (boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)-1 ||
        boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+1) && boardArr[i].empty){
-        console.log(boardArr[i].y.charCodeAt(0));
-        document.getElementById(boardArr[i].tileLocation+'Tile').style.backgroundColor="#848EA1";
+        if(!pieceSelectedBool){
+          highlightedTiles.push(boardArr[i]);
+          document.getElementById(boardArr[i].tileLocation+'Tile').style.backgroundColor="#848EA1";
+          document.getElementById(boardArr[i].tileLocation+'Tile').addEventListener('click', function(){updatePiece(pieceInfo, boardArr[i])})
+        }else{
+          document.getElementById(boardArr[i].tileLocation+'Tile').style.backgroundColor="#A67D5D";
+          highlightedTiles = [];
+        }
       }
     }
   }
+}
+
+function updatePiece(checkerPos, tilePos){
+  console.log('yay');
 }
 
 (function init(){
