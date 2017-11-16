@@ -83,6 +83,9 @@ function buildPiece(piece){
   if(piece.color == 'light'){tmpPce.style.cursor="pointer"}
   tmpPce.id = piece.tileLocation + 'Piece';
   tmpPce.addEventListener('click', function(){movePiece(piece);})
+  if(piece.crowned){
+    tmpPce.innerHTML = "&#9813";
+  }
   for(var i = 0; i < boardArr.length; i++){
     if((boardArr[i].tileLocation == piece.tileLocation) && piece.color == 'light'){
       boardArr[i].currPieceLight = 1;

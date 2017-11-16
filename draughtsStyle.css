@@ -28,6 +28,9 @@ html, body{
   height: 55px;
   border-radius: 50%;
   margin: 11px auto;
+  color: white;
+  font-size: 2.5em;
+  text-align: center;
 }
 
 .darkPiece{
