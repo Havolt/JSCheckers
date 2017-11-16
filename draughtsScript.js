@@ -138,23 +138,23 @@ function highlightMove(pieceInfo){
       }
       boardArr[i].tileLocation
 
-      console.log(pieceTakingDir)
        for(var j = 0; j < boardArr.length; j++){
          let holder = j;
 
          if((boardArr[j].x == pieceInfo.x+(direction*2)) && (boardArr[j].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+(pieceTakingDir*2)) &&
           boardArr[j].empty){
+            let takenHolder = i;
             if(!pieceSelectedBool){
               highlightedTiles.push(boardArr[j]);
               document.getElementById(boardArr[j].tileLocation+'Tile').style.backgroundColor="#848EA1";
-              document.getElementById(boardArr[j].tileLocation+'Tile').addEventListener('click', function(){updatePiece(pieceInfo, boardArr[holder])});
+              document.getElementById(boardArr[j].tileLocation+'Tile').addEventListener('click', function(){updatePiece(pieceInfo, boardArr[holder], boardArr[takenHolder])});
               if(pieceInfo.color == 'light'){
                 darkArr.splice(takenPiece, 1);
               }
               else{
                 lightArr.splice(takenPiece, 1);
               }
-
+              //document.getElementById(boardArr[i].tileLocation+'Tile').removeChild(document.getElementById(boardArr[i].tileLocation+'Tile').childNodes[0]);
 
               pieceToTake = true;
             }
@@ -167,11 +167,9 @@ function highlightMove(pieceInfo){
             }
           }
         }
-
       }
     }
   }
-
 
   //Piece unable to be taken
   if(!pieceToTake){
@@ -198,7 +196,7 @@ function highlightMove(pieceInfo){
   }
 }
 
-function updatePiece(checkerPos, tilePos){
+function updatePiece(checkerPos, tilePos, takenPos){
 
   for(var i = 0; i < boardArr.length;i++){
     if(checkerPos.tileLocation == boardArr[i].tileLocation){
@@ -217,6 +215,12 @@ function updatePiece(checkerPos, tilePos){
     let el = document.getElementById(highlightedTiles[i].tileLocation+'Tile');
     let elClone = el.cloneNode(true);
     app.replaceChild(elClone, el);
+  }
+
+  if(takenPos){
+    document.getElementById(takenPos.tileLocation+'Tile').removeChild(document.getElementById(takenPos.tileLocation+'Tile').childNodes[0]);
+    takenPos.empty = true;
+    takenPos.currPieceLight = 0;
   }
 
   tilePos.empty = false;
