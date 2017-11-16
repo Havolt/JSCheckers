@@ -57,8 +57,8 @@ function createColorArr(color){
     tmpPce.x = boardArr[runner].x;
     tmpPce.y = boardArr[runner].y;
     boardArr[runner].empty = false;
-    if(color == 'light'){ tmpPce.currPieceLight = 1; lightArr.push(tmpPce);}
-    else{ tmpPce.currPieceLight = -1; darkArr.push(tmpPce);}
+    if(color == 'light'){ tmpPce.currPieceLight = 1; tmpPce.oppColor = darkArr; lightArr.push(tmpPce);}
+    else{ tmpPce.currPieceLight = -1; tmpPce.oppColor = lightArr; darkArr.push(tmpPce);}
   }
 }
 
@@ -112,6 +112,7 @@ function highlightMove(pieceInfo){
 
   let pieceToTake = false;
   let pieceTakingDir;
+  let takenPiece;
   if(pieceInfo.color == 'light'){ direction = 1 }
   else{ direction = -1 }
   if(!pieceSelectedBool){ document.getElementById(pieceInfo.tileLocation+'Piece').style.boxShadow="3px 3px 2px black" }
@@ -119,6 +120,7 @@ function highlightMove(pieceInfo){
 
   //Piece able to be taken
   for(var i = 0; i < boardArr.length; i++){
+
     if(!pieceInfo.crowned){
       if((boardArr[i].x == pieceInfo.x+direction) && (boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)-1 ||
        boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+1) && (boardArr[i].currPieceLight == -pieceInfo.currPieceLight)){
@@ -128,16 +130,32 @@ function highlightMove(pieceInfo){
         pieceTakingDir = 1;
       }
 
+      for(var n = 0; n < pieceInfo.oppColor.length; n++){
+        console.log(pieceInfo.oppColor[n]);
+        if(pieceInfo.oppColor.tileLocation == boardArr[i].tileLocation){
+          takenPiece = n;
+        }
+      }
+      boardArr[i].tileLocation
+
       console.log(pieceTakingDir)
        for(var j = 0; j < boardArr.length; j++){
          let holder = j;
+
          if((boardArr[j].x == pieceInfo.x+(direction*2)) && (boardArr[j].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+(pieceTakingDir*2)) &&
           boardArr[j].empty){
             if(!pieceSelectedBool){
               highlightedTiles.push(boardArr[j]);
               document.getElementById(boardArr[j].tileLocation+'Tile').style.backgroundColor="#848EA1";
-              document.getElementById(boardArr[j].tileLocation+'Tile').addEventListener('click', function(){updatePiece(pieceInfo, boardArr[holder])})
-              console.log('baby');
+              document.getElementById(boardArr[j].tileLocation+'Tile').addEventListener('click', function(){updatePiece(pieceInfo, boardArr[holder])});
+              if(pieceInfo.color == 'light'){
+                darkArr.splice(takenPiece, 1);
+              }
+              else{
+                lightArr.splice(takenPiece, 1);
+              }
+
+
               pieceToTake = true;
             }
             else{
