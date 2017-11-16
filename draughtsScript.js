@@ -223,6 +223,12 @@ function updatePiece(checkerPos, tilePos, takenPos){
     takenPos.currPieceLight = 0;
   }
 
+  if(checkerPos.color == 'light' && checkerPos.x == 8){
+    checkerPos.crowned = true;
+  }else if(checkerPos.color == 'dark' && checkerPos.x == 1){
+    checkerPos.crowned = true;
+  }
+
   tilePos.empty = false;
   highlightedTiles = [];
   pieceSelectedBool = false;
