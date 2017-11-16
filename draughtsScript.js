@@ -82,7 +82,7 @@ function buildPiece(piece){
   tmpPce.classList = "allPiece " + piece.color + "Piece";
   if(piece.color == 'light'){tmpPce.style.cursor="pointer"}
   tmpPce.id = piece.tileLocation + 'Piece';
-  tmpPce.addEventListener('click', function(){movePiece(piece)})
+  tmpPce.addEventListener('click', function(){movePiece(piece);})
   document.getElementById(piece.tileLocation+'Tile').appendChild(tmpPce);
 
 }
@@ -114,7 +114,7 @@ function highlightMove(pieceInfo){
         if(!pieceSelectedBool){
           highlightedTiles.push(boardArr[i]);
           document.getElementById(boardArr[i].tileLocation+'Tile').style.backgroundColor="#848EA1";
-          console.log(boardArr[i]);
+          //console.log(boardArr[i]);
           document.getElementById(boardArr[i].tileLocation+'Tile').addEventListener('click', function(){updatePiece(pieceInfo, boardArr[holder])})
         }else{
           document.getElementById(boardArr[i].tileLocation+'Tile').style.backgroundColor="#A67D5D";
@@ -129,7 +129,32 @@ function highlightMove(pieceInfo){
 }
 
 function updatePiece(checkerPos, tilePos){
-  console.log(tilePos);
+
+  for(var i = 0; i < boardArr.length;i++){
+    if(checkerPos.tileLocation == boardArr[i].tileLocation){
+
+      boardArr[i].empty = true;
+    }
+  }
+  document.getElementById(checkerPos.tileLocation+'Tile').removeChild(document.getElementById(checkerPos.tileLocation+'Tile').childNodes[0]);
+  checkerPos.tileLocation = tilePos.tileLocation;
+  checkerPos.x = tilePos.x;
+  checkerPos.y = tilePos.y;
+  for(var i = 0; i < highlightedTiles.length; i++){
+    console.log(highlightedTiles[i].tileLocation);
+    document.getElementById(highlightedTiles[i].tileLocation+'Tile').style.backgroundColor="#A67D5D";
+    let el = document.getElementById(highlightedTiles[i].tileLocation+'Tile');
+    let elClone = el.cloneNode(true);
+    app.replaceChild(elClone, el);
+  }
+
+  tilePos.empty = false;
+  highlightedTiles = [];
+  pieceSelectedBool = false;
+  pieceSelectedInfo = undefined;
+  buildPiece(checkerPos);
+
+
 }
 
 (function init(){
