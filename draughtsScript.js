@@ -130,12 +130,22 @@ function highlightMove(pieceInfo){
 
       console.log(pieceTakingDir)
        for(var j = 0; j < boardArr.length; j++){
+         let holder = j;
          if((boardArr[j].x == pieceInfo.x+(direction*2)) && (boardArr[j].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+(pieceTakingDir*2)) &&
           boardArr[j].empty){
             if(!pieceSelectedBool){
-              //document.getElementById(boardArr[j].tileLocation+'Tile').style.backgroundColor="green";
+              highlightedTiles.push(boardArr[j]);
+              document.getElementById(boardArr[j].tileLocation+'Tile').style.backgroundColor="#848EA1";
+              document.getElementById(boardArr[j].tileLocation+'Tile').addEventListener('click', function(){updatePiece(pieceInfo, boardArr[holder])})
               console.log('baby');
               pieceToTake = true;
+            }
+            else{
+              document.getElementById(boardArr[j].tileLocation+'Tile').style.backgroundColor="#A67D5D";
+              el = document.getElementById(boardArr[j].tileLocation+'Tile');
+              elClone = el.cloneNode(true);
+              app.replaceChild(elClone, el);
+              highlightedTiles = [];
             }
           }
         }
