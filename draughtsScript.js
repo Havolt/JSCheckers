@@ -4,6 +4,8 @@
 const tileAmt = 8;
 const initPieceAmt = 12;
 let runner;
+let lightMustTake = false;
+let darkMustTake = false;
 
 let whiteTurn = true;
 let direction;
@@ -214,7 +216,7 @@ function highlightMove(pieceInfo){
   }
 
   //Piece unable to be taken
-    if(!pieceToTake){
+    if(!pieceToTake && (pieceInfo.color == 'light' && !lightMustTake) || (pieceInfo.color == 'dark' && !darkMustTake)){
       for(var i = 0; i < boardArr.length; i++){
         let holder = i;
         if((boardArr[i].x == pieceInfo.x+direction) && (boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)-1 ||
@@ -296,10 +298,48 @@ function updatePiece(checkerPos, tilePos, takenPos){
   else if(darkArr.length == 0){
     alert('Dark Wins');
   }
+
+  whiteTurn = !whiteTurn;
+  console.log('whiteTurn = ' + whiteTurn)
+  if(whiteTurn){scanner(lightArr);}
+  else{scanner(darkArr);}
 }
 
 function scanner(arr){
-  
+
+  lightMustTake = false;
+  darkMustTake = false;
+
+  let direction;
+  let pieceTakingDir;
+
+  if(arr[0].color == 'light'){ direction = 1 }
+  else{ direction = -1 }
+
+  for(var i = 0; i < arr.length; i++){
+    for(var j = 0; j < boardArr.length; j++){
+      if(boardArr[j].y.charCodeAt(0) < arr[i].y.charCodeAt(0)){pieceTakingDir = -1;}
+      else{pieceTakingDir = 1;}
+      if((boardArr[j].x == arr[i].x+direction) && (boardArr[j].y.charCodeAt(0) == arr[i].y.charCodeAt(0)-1 ||
+       boardArr[j].y.charCodeAt(0) == arr[i].y.charCodeAt(0)+1) && (boardArr[j].currPieceLight == -arr[i].currPieceLight)){
+         for(var k = 0; k < boardArr.length; k++){
+           let holder = k;
+           if((boardArr[k].x == arr[i].x+(direction*2)) && (boardArr[k].y.charCodeAt(0) == arr[i].y.charCodeAt(0)+(pieceTakingDir*2)) &&
+            boardArr[k].empty){
+              let takenHolder = j;
+              if(arr[i].color == 'light'){
+                lightMustTake = true;
+              }
+              else{
+                darkMustTake = true;
+              }
+
+            }
+          }
+       }
+    }
+  }
+  console.log(lightMustTake);
 }
 
 (function init(){
