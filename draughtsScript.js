@@ -115,8 +115,8 @@ function highlightMove(pieceInfo){
   //console.log(pieceInfo);
 
   let pieceToTake = false;
-  let pieceTakingDir;
-  let takenPiece;
+  let pieceTakingDir = undefined;
+  let takenPiece = undefined;
   if(pieceInfo.color == 'light'){ direction = 1 }
   else{ direction = -1 }
   if(!pieceSelectedBool){ document.getElementById(pieceInfo.tileLocation+'Piece').style.boxShadow="3px 3px 2px black" }
@@ -145,9 +145,14 @@ function highlightMove(pieceInfo){
           if(!pieceSelectedBool){
             highlightedTiles.push(boardArr[j]);
             document.getElementById(boardArr[j].tileLocation+'Tile').style.backgroundColor="#848EA1";
-            document.getElementById(boardArr[j].tileLocation+'Tile').addEventListener('click', function(){updatePiece(pieceInfo, boardArr[holder], boardArr[takenHolder])});
-            if(pieceInfo.color == 'light'){darkArr.splice(takenPiece, 1);}
-            else{lightArr.splice(takenPiece, 1);}
+            document.getElementById(boardArr[j].tileLocation+'Tile').addEventListener('click', function(){
+              updatePiece(pieceInfo, boardArr[holder], boardArr[takenHolder]);
+              if(pieceInfo.color == 'light'){darkArr.splice(takenPiece, 1);}
+
+              else if(pieceInfo.color == 'dark'){lightArr.splice(takenPiece, 1);}
+
+            });
+
             pieceToTake = true;
           }
           else{
@@ -248,6 +253,10 @@ function highlightMove(pieceInfo){
         }
       }
     }
+    console.log(lightArr);
+    if(lightArr.length < 12){
+      alert('wtf!');
+    }
   }
 
 
@@ -277,7 +286,7 @@ function updatePiece(checkerPos, tilePos, takenPos){
     takenPos.currPieceLight = 0;
   }
   if(checkerPos.color == 'light' && checkerPos.x == 8){checkerPos.crowned = true;}
-  else if(checkerPos.color == 'dark' && checkerPos.x == 1){checkerPos.crowned = true;}
+  if(checkerPos.color == 'dark' && checkerPos.x == 1){checkerPos.crowned = true;}
   tilePos.empty = false;
   highlightedTiles = [];
   pieceSelectedBool = false;
