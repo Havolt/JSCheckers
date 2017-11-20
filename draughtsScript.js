@@ -6,6 +6,7 @@ const initPieceAmt = 12;
 let runner;
 let lightMustTake = false;
 let darkMustTake = false;
+let anotherMove = false;
 
 let whiteTurn = true;
 let direction;
@@ -261,6 +262,7 @@ function highlightMove(pieceInfo){
 
 function updatePiece(checkerPos, tilePos, takenPos){
 
+  anotherMove = false;
   for(var i = 0; i < boardArr.length;i++){
     if(checkerPos.tileLocation == boardArr[i].tileLocation){
       boardArr[i].currPieceLight = 0;
@@ -299,10 +301,19 @@ function updatePiece(checkerPos, tilePos, takenPos){
     alert('Dark Wins');
   }
 
+  currScan(checkerPos );
+
   whiteTurn = !whiteTurn;
   console.log('whiteTurn = ' + whiteTurn)
   if(whiteTurn){scanner(lightArr);}
   else{scanner(darkArr);}
+}
+
+function currScan(piece){
+
+  if(1 == 2){
+    anotherMove = true;
+  }
 }
 
 function scanner(arr){
@@ -326,19 +337,38 @@ function scanner(arr){
            let holder = k;
            if((boardArr[k].x == arr[i].x+(direction*2)) && (boardArr[k].y.charCodeAt(0) == arr[i].y.charCodeAt(0)+(pieceTakingDir*2)) &&
             boardArr[k].empty){
-              let takenHolder = j;
-              if(arr[i].color == 'light'){
-                lightMustTake = true;
-              }
-              else{
-                darkMustTake = true;
-              }
-
+              if(arr[i].color == 'light'){lightMustTake = true;}
+              else{darkMustTake = true;}
             }
+          }
+       }
+
+       if(arr[i].crowned){
+         if((boardArr[j].x == arr[i].x-direction) && (boardArr[j].y.charCodeAt(0) == arr[i].y.charCodeAt(0)-1 ||
+          boardArr[j].y.charCodeAt(0) == arr[i].y.charCodeAt(0)+1) && (boardArr[j].currPieceLight == -arr[i].currPieceLight)){
+            if(boardArr[j].y.charCodeAt(0) < arr[i].y.charCodeAt(0)){pieceTakingDir = -1;}
+            else{pieceTakingDir = 1;}
+
+            boardArr[j].tileLocation
+
+            for(var j = 0; j < boardArr.length; j++){
+              if((boardArr[j].x == arr[i].x+(-direction*2)) && (boardArr[j].y.charCodeAt(0) == arr[i].y.charCodeAt(0)+(pieceTakingDir*2)) &&
+               boardArr[j].empty){
+                 if(arr[i].color == 'light'){lightMustTake = true;}
+                 else{darkMustTake = true;}
+               }
+             }
           }
        }
     }
   }
+
+
+
+
+
+
+
   console.log(lightMustTake);
 }
 
