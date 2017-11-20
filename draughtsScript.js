@@ -1,4 +1,6 @@
 
+//Next step is to edit highlightMove function to allow the taking over of pieces in opposite direction while in crowned mode
+
 const tileAmt = 8;
 const initPieceAmt = 12;
 let runner;
@@ -124,17 +126,16 @@ function highlightMove(pieceInfo){
   for(var i = 0; i < boardArr.length; i++){
     if((boardArr[i].x == pieceInfo.x+direction) && (boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)-1 ||
      boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+1) && (boardArr[i].currPieceLight == -pieceInfo.currPieceLight)){
-
      if(boardArr[i].y.charCodeAt(0) < pieceInfo.y.charCodeAt(0)){pieceTakingDir = -1;}
      else{pieceTakingDir = 1;}
 
-    for(var n = 0; n < pieceInfo.oppColor.length; n++){
-      console.log(pieceInfo.oppColor[n]);
-      if(pieceInfo.oppColor.tileLocation == boardArr[i].tileLocation){
-        takenPiece = n;
+      for(var n = 0; n < pieceInfo.oppColor.length; n++){
+        console.log(pieceInfo.oppColor[n]);
+        if(pieceInfo.oppColor.tileLocation == boardArr[i].tileLocation){
+          takenPiece = n;
+        }
       }
-    }
-    boardArr[i].tileLocation
+      boardArr[i].tileLocation
 
      for(var j = 0; j < boardArr.length; j++){
        let holder = j;
@@ -158,7 +159,51 @@ function highlightMove(pieceInfo){
           }
         }
       }
+
+
     }
+
+
+    /////////////////////////////////////
+    //////////////////////////////////////
+    /////////////////////////////////////////
+
+    if((boardArr[i].x == pieceInfo.x-direction) && (boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)-1 ||
+     boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+1) && (boardArr[i].currPieceLight == -pieceInfo.currPieceLight)){
+       if(boardArr[i].y.charCodeAt(0) < pieceInfo.y.charCodeAt(0)){pieceTakingDir = -1;}
+       else{pieceTakingDir = 1;}
+
+       for(var n = 0; n < pieceInfo.oppColor.length; n++){
+         console.log(pieceInfo.oppColor[n]);
+         if(pieceInfo.oppColor.tileLocation == boardArr[i].tileLocation){
+           takenPiece = n;
+         }
+       }
+       boardArr[i].tileLocation
+
+       for(var j = 0; j < boardArr.length; j++){
+         let holder = j;
+         if((boardArr[j].x == pieceInfo.x+(-direction*2)) && (boardArr[j].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+(pieceTakingDir*2)) &&
+          boardArr[j].empty){
+            let takenHolder = i;
+            if(!pieceSelectedBool){
+              highlightedTiles.push(boardArr[j]);
+              document.getElementById(boardArr[j].tileLocation+'Tile').style.backgroundColor="#848EA1";
+              document.getElementById(boardArr[j].tileLocation+'Tile').addEventListener('click', function(){updatePiece(pieceInfo, boardArr[holder], boardArr[takenHolder])});
+              if(pieceInfo.color == 'light'){darkArr.splice(takenPiece, 1);}
+              else{lightArr.splice(takenPiece, 1);}
+              pieceToTake = true;
+            }
+            else{
+              document.getElementById(boardArr[j].tileLocation+'Tile').style.backgroundColor="#A67D5D";
+              el = document.getElementById(boardArr[j].tileLocation+'Tile');
+              elClone = el.cloneNode(true);
+              app.replaceChild(elClone, el);
+              highlightedTiles = [];
+            }
+          }
+        }
+     }
   }
 
   //Piece unable to be taken
@@ -180,9 +225,11 @@ function highlightMove(pieceInfo){
             highlightedTiles = [];
           }
         }
+
+
         if(pieceInfo.crowned){
           if((boardArr[i].x == pieceInfo.x-direction) && (boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)-1 ||
-           boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+1) && boardArr[i].empty){
+           boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)-1) && boardArr[i].empty){
              if(!pieceSelectedBool){
                highlightedTiles.push(boardArr[i]);
                document.getElementById(boardArr[i].tileLocation+'Tile').style.backgroundColor="#848EA1";
@@ -200,6 +247,8 @@ function highlightMove(pieceInfo){
       }
     }
   }
+
+
 
 function updatePiece(checkerPos, tilePos, takenPos){
 
