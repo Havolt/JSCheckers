@@ -327,11 +327,26 @@ function scanner(arr){
   lightMustTake = false;
   darkMustTake = false;
 
-  let direction;
+  let direc;
   let pieceTakingDir;
 
-  if(arr[0].color == 'light'){ direction = 1 }
-  else{ direction = -1 }
+  if(arr[0].color == 'light'){ direc = 1 }
+  else{ direc = -1; console.log('holy fuck ' + direc) }
+
+  for(var a = 0; a < arr.length; a++){
+    for(var i = 0; i < boardArr.length; i++){
+      if((boardArr[i].x == arr[a].x+direc) && (boardArr[i].y.charCodeAt(0) == arr[a].y.charCodeAt(0)-1 ||
+       boardArr[i].y.charCodeAt(0) == arr[a].y.charCodeAt(0)+1) && (boardArr[i].currPieceLight == -arr[a].currPieceLight) ){
+         //This targets both elements ahead of checker of opposing value
+      }
+    }
+  }
+
+  //////////////
+
+  console.log(direction + ' ' + arr[0].color)
+
+
 
 
 
