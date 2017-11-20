@@ -337,7 +337,15 @@ function scanner(arr){
     for(var i = 0; i < boardArr.length; i++){
       if((boardArr[i].x == arr[a].x+direc) && (boardArr[i].y.charCodeAt(0) == arr[a].y.charCodeAt(0)-1 ||
        boardArr[i].y.charCodeAt(0) == arr[a].y.charCodeAt(0)+1) && (boardArr[i].currPieceLight == -arr[a].currPieceLight) ){
-         //This targets both elements ahead of checker of opposing value
+         if(boardArr[i].y.charCodeAt(0) < arr[a].y.charCodeAt(0)){pieceTakingDir = -1;}
+         else{pieceTakingDir = 1;}
+
+         for(var j = 0; j < boardArr.length; j++){
+           if((boardArr[j].x == arr[a].x+direc*2) && (boardArr[j].y.charCodeAt(0) == arr[a].y.charCodeAt(0)+(pieceTakingDir*2)) && boardArr[j].empty){
+              console.log(boardArr[j]);
+              //This targets both elements ahead of checker of opposing value with an empty space ahead of them
+            }
+        }
       }
     }
   }
