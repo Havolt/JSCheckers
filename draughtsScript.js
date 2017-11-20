@@ -130,7 +130,7 @@ function highlightMove(pieceInfo){
      else{pieceTakingDir = 1;}
 
       for(var n = 0; n < pieceInfo.oppColor.length; n++){
-        console.log(pieceInfo.oppColor[n]);
+        //console.log(pieceInfo.oppColor[n]);
         if(pieceInfo.oppColor.tileLocation == boardArr[i].tileLocation){
           takenPiece = n;
         }
@@ -180,7 +180,7 @@ function highlightMove(pieceInfo){
          else{pieceTakingDir = 1;}
 
          for(var n = 0; n < pieceInfo.oppColor.length; n++){
-           console.log(pieceInfo.oppColor[n]);
+           //console.log(pieceInfo.oppColor[n]);
            if(pieceInfo.oppColor.tileLocation == boardArr[i].tileLocation){
              takenPiece = n;
            }
@@ -253,10 +253,6 @@ function highlightMove(pieceInfo){
         }
       }
     }
-    console.log(lightArr);
-    if(lightArr.length < 12){
-      alert('wtf!');
-    }
   }
 
 
@@ -267,7 +263,7 @@ function updatePiece(checkerPos, tilePos, takenPos){
     if(checkerPos.tileLocation == boardArr[i].tileLocation){
       boardArr[i].currPieceLight = 0;
       boardArr[i].empty = true;
-      console.log(boardArr[i]);
+      //console.log(boardArr[i]);
     }
   }
   document.getElementById(checkerPos.tileLocation+'Tile').removeChild(document.getElementById(checkerPos.tileLocation+'Tile').childNodes[0]);
@@ -292,6 +288,18 @@ function updatePiece(checkerPos, tilePos, takenPos){
   pieceSelectedBool = false;
   pieceSelectedInfo = undefined;
   buildPiece(checkerPos);
+
+  //New Stuff
+  if(lightArr.length == 0){
+    alert('Light Wins');
+  }
+  else if(darkArr.length == 0){
+    alert('Dark Wins');
+  }
+}
+
+function scanner(arr){
+  
 }
 
 (function init(){
