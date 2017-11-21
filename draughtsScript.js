@@ -121,6 +121,7 @@ function highlightMove(pieceInfo){
   let pieceToTake = false;
   let pieceTakingDir = undefined;
   let takenPiece = undefined;
+  let takenPiece2 = undefined;
   if(pieceInfo.color == 'light'){ direction = 1 }
   else{ direction = -1 }
   if(!pieceSelectedBool){ document.getElementById(pieceInfo.tileLocation+'Piece').style.boxShadow="3px 3px 2px black" }
@@ -136,29 +137,17 @@ function highlightMove(pieceInfo){
        if(boardArr[i].y.charCodeAt(0) < pieceInfo.y.charCodeAt(0)){pieceTakingDir = -1;}
        else{pieceTakingDir = 1;}
 
-       /*
-        for(var n = 0; n < pieceInfo.oppColor.length; n++){
-          if(boardArr[i].tileLocation == pieceInfo.oppColor[n].tileLocation){
-            takenPiece = boardArr[i];
-            console.log('takenPieceAbove');
-            console.log(takenPiece)
-            console.log('takenPieceFuck');
-            takenPiece = n;
-          }
-        }
-        */
-
        for(var j = 0; j < boardArr.length; j++){
          let holder = j;
          if((boardArr[j].x == pieceInfo.x+(direction*2)) && (boardArr[j].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+(pieceTakingDir*2)) &&
           boardArr[j].empty){
             for(var n = 0; n < pieceInfo.oppColor.length; n++){
               if(boardArr[i].tileLocation == pieceInfo.oppColor[n].tileLocation){
-                takenPiece = boardArr[i];
                 console.log('takenPieceAbove');
-                console.log(takenPiece)
+                console.log(boardArr[i])
                 console.log('takenPieceFuck');
                 takenPiece = n;
+                console.log(takenPiece)
               }
             }
             let takenHolder = i;
@@ -166,9 +155,11 @@ function highlightMove(pieceInfo){
               highlightedTiles.push(boardArr[j]);
               document.getElementById(boardArr[j].tileLocation+'Tile').style.backgroundColor="#848EA1";
               document.getElementById(boardArr[j].tileLocation+'Tile').addEventListener('click', function(){
-                updatePiece(pieceInfo, boardArr[holder], boardArr[takenHolder]);
+                updatePiece(pieceInfo, boardArr[holder], boardArr[takenHolder], takenPiece);
+                /*
                 if(pieceInfo.color == 'light'){darkArr.splice(takenPiece, 1);}
                 else if(pieceInfo.color == 'dark'){lightArr.splice(takenPiece, 1);}
+                */
 
               });
               pieceToTake = true;
@@ -189,19 +180,11 @@ function highlightMove(pieceInfo){
       /////////////////////////////////////////
 
       if(pieceInfo.crowned){
+        console.log('jesus christ ' + pieceInfo.color)
         if((boardArr[i].x == pieceInfo.x-direction) && (boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)-1 ||
          boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+1) && (boardArr[i].currPieceLight == -pieceInfo.currPieceLight)){
            if(boardArr[i].y.charCodeAt(0) < pieceInfo.y.charCodeAt(0)){pieceTakingDir = -1;}
            else{pieceTakingDir = 1;}
-
-           /*
-           for(var n = 0; n < pieceInfo.oppColor.length; n++){
-             if(boardArr[i].tileLocation == pieceInfo.oppColor[n].tileLocation){
-               takenPiece = boardArr[i];
-               takenPiece = n;
-             }
-           }
-           */
 
            for(var j = 0; j < boardArr.length; j++){
              let holder = j;
@@ -209,8 +192,7 @@ function highlightMove(pieceInfo){
               boardArr[j].empty){
                 for(var n = 0; n < pieceInfo.oppColor.length; n++){
                   if(boardArr[i].tileLocation == pieceInfo.oppColor[n].tileLocation){
-                    takenPiece = boardArr[i];
-                    takenPiece = n;
+                    takenPiece2 = n;
                   }
                 }
                 let takenHolder = i;
@@ -218,9 +200,11 @@ function highlightMove(pieceInfo){
                   highlightedTiles.push(boardArr[j]);
                   document.getElementById(boardArr[j].tileLocation+'Tile').style.backgroundColor="#848EA1";
                   document.getElementById(boardArr[j].tileLocation+'Tile').addEventListener('click', function(){
-                    updatePiece(pieceInfo, boardArr[holder], boardArr[takenHolder])
-                    if(pieceInfo.color == 'light'){darkArr.splice(takenPiece, 1);}
-                    else{lightArr.splice(takenPiece, 1);}
+                    updatePiece(pieceInfo, boardArr[holder], boardArr[takenHolder], takenPiece2);
+                    /*
+                    if(pieceInfo.color == 'light'){darkArr.splice(takenPiece2, 1);}
+                    else{lightArr.splice(takenPiece2, 1);}
+                    */
                   });
 
                   pieceToTake = true;
@@ -283,7 +267,7 @@ function highlightMove(pieceInfo){
 
 
 
-function updatePiece(checkerPos, tilePos, takenPos){
+function updatePiece(checkerPos, tilePos, takenPos, takeThisPiece){
 
   anotherMove = false;
 
@@ -327,6 +311,11 @@ function updatePiece(checkerPos, tilePos, takenPos){
 
   buildPiece(checkerPos);
 
+  if(takenPos){
+    if(checkerPos.color == 'light'){darkArr.splice(takeThisPiece, 1);}
+    else{lightArr.splice(takeThisPiece, 1);}
+  }
+
   //New Stuff
   if(lightArr.length == 0){
     alert('Dark Wins');
@@ -339,8 +328,8 @@ function updatePiece(checkerPos, tilePos, takenPos){
   else{
     if(!anotherMove){
       whiteTurn = !whiteTurn;
-      if(whiteTurn){scanner(lightArr);}
-      else{scanner(darkArr);}
+      if(whiteTurn){scanner(lightArr)}
+      else{scanner(darkArr)}
     }
   }
 
@@ -380,8 +369,8 @@ function scanner(arr){
          for(var j = 0; j < boardArr.length; j++){
            if((boardArr[j].x == arr[a].x+(direc*2)) && (boardArr[j].y.charCodeAt(0) == arr[a].y.charCodeAt(0)+(pieceTakingDir*2)) && boardArr[j].empty){
 
-              if(arr[a].color == 'light' && boardArr[i].currPieceLight == -1){lightMustTake = true;  }
-              else if(arr[a].color == 'dark'&& boardArr[i].currPieceLight == 1){darkMustTake = true; }
+              if(arr[a].color == 'light' && boardArr[i].currPieceLight == -1){lightMustTake = true; console.log(arr[a]); console.log('causing take ') }
+              else if(arr[a].color == 'dark'&& boardArr[i].currPieceLight == 1){darkMustTake = true; console.log(arr[a]); console.log('causing take') }
               //This targets both elements ahead of checker of opposing value with an empty space ahead of them
             }
         }
@@ -396,8 +385,8 @@ function scanner(arr){
            for(var j = 0; j < boardArr.length; j++){
              if((boardArr[j].x == arr[a].x-(direc*2)) && (boardArr[j].y.charCodeAt(0) == arr[a].y.charCodeAt(0)+(pieceTakingDir*2)) && boardArr[j].empty){
 
-               if(arr[a].color == 'light' && boardArr[i].currPieceLight == -1){lightMustTake = true;  }
-               else if(arr[a].color == 'dark'&& boardArr[i].currPieceLight == 1){darkMustTake = true; }
+               if(arr[a].color == 'light' && boardArr[i].currPieceLight == -1){lightMustTake = true; console.log(arr[a]); console.log('causing take crown') }
+               else if(arr[a].color == 'dark'&& boardArr[i].currPieceLight == 1){darkMustTake = true; console.log(arr[a]); console.log('causing take crown')}
 
              }
          }
