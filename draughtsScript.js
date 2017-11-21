@@ -342,7 +342,8 @@ function scanner(arr){
 
          for(var j = 0; j < boardArr.length; j++){
            if((boardArr[j].x == arr[a].x+direc*2) && (boardArr[j].y.charCodeAt(0) == arr[a].y.charCodeAt(0)+(pieceTakingDir*2)) && boardArr[j].empty){
-              console.log(boardArr[j]);
+              if(arr[a].color == 'light'){lightMustTake = true; }
+              else if(arr[a].color == 'dark'){darkMustTake = true}
               //This targets both elements ahead of checker of opposing value with an empty space ahead of them
             }
         }
@@ -351,12 +352,6 @@ function scanner(arr){
   }
 
   //////////////
-
-  console.log(direction + ' ' + arr[0].color)
-
-
-
-
 
   console.log(lightMustTake);
 }
