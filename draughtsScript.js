@@ -137,10 +137,8 @@ function highlightMove(pieceInfo){
        else{pieceTakingDir = 1;}
 
         for(var n = 0; n < pieceInfo.oppColor.length; n++){
-
           if(boardArr[i].tileLocation == pieceInfo.oppColor[n].tileLocation){
             takenPiece = boardArr[i];
-            console.log(boardArr[i])
             console.log('takenPieceAbove');
             console.log(takenPiece)
             console.log('takenPieceFuck');
@@ -160,7 +158,6 @@ function highlightMove(pieceInfo){
               document.getElementById(boardArr[j].tileLocation+'Tile').addEventListener('click', function(){
                 updatePiece(pieceInfo, boardArr[holder], boardArr[takenHolder]);
                 if(pieceInfo.color == 'light'){darkArr.splice(takenPiece, 1);}
-
                 else if(pieceInfo.color == 'dark'){lightArr.splice(takenPiece, 1);}
 
               });
@@ -190,10 +187,6 @@ function highlightMove(pieceInfo){
            for(var n = 0; n < pieceInfo.oppColor.length; n++){
              if(boardArr[i].tileLocation == pieceInfo.oppColor[n].tileLocation){
                takenPiece = boardArr[i];
-               console.log(boardArr[i])
-               console.log('takenPieceAbove');
-               console.log(takenPiece)
-               console.log('takenPieceFuck');
                takenPiece = n;
              }
            }
@@ -266,7 +259,6 @@ function highlightMove(pieceInfo){
         }
       }
     }
-    console.log(pieceToTake);
   }
 
 
@@ -274,6 +266,7 @@ function highlightMove(pieceInfo){
 function updatePiece(checkerPos, tilePos, takenPos){
 
   anotherMove = false;
+
   for(var i = 0; i < boardArr.length;i++){
     if(checkerPos.tileLocation == boardArr[i].tileLocation){
       boardArr[i].currPieceLight = 0;
@@ -281,27 +274,38 @@ function updatePiece(checkerPos, tilePos, takenPos){
       //console.log(boardArr[i]);
     }
   }
+
+  /////////////
+
   document.getElementById(checkerPos.tileLocation+'Tile').removeChild(document.getElementById(checkerPos.tileLocation+'Tile').childNodes[0]);
   checkerPos.tileLocation = tilePos.tileLocation;
   checkerPos.x = tilePos.x;
   checkerPos.y = tilePos.y;
+
+
   for(var i = 0; i < highlightedTiles.length; i++){
     document.getElementById(highlightedTiles[i].tileLocation+'Tile').style.backgroundColor="#A67D5D";
     let el = document.getElementById(highlightedTiles[i].tileLocation+'Tile');
     let elClone = el.cloneNode(true);
     app.replaceChild(elClone, el);
   }
+
+
   if(takenPos){
     document.getElementById(takenPos.tileLocation+'Tile').removeChild(document.getElementById(takenPos.tileLocation+'Tile').childNodes[0]);
     takenPos.empty = true;
     takenPos.currPieceLight = 0;
   }
+
+
   if(checkerPos.color == 'light' && checkerPos.x == 8){checkerPos.crowned = true;}
   if(checkerPos.color == 'dark' && checkerPos.x == 1){checkerPos.crowned = true;}
   tilePos.empty = false;
   highlightedTiles = [];
   pieceSelectedBool = false;
   pieceSelectedInfo = undefined;
+
+
   buildPiece(checkerPos);
 
   //New Stuff
@@ -312,7 +316,7 @@ function updatePiece(checkerPos, tilePos, takenPos){
     alert('Light Wins');
   }
 
-  console.log(checkerPos)
+
 
   /*
   let runnForrest = 0;
@@ -364,8 +368,8 @@ function scanner(arr){
          for(var j = 0; j < boardArr.length; j++){
            if((boardArr[j].x == arr[a].x+(direc*2)) && (boardArr[j].y.charCodeAt(0) == arr[a].y.charCodeAt(0)+(pieceTakingDir*2)) && boardArr[j].empty){
 
-              if(arr[a].color == 'light' && boardArr[i].currPieceLight == -1){lightMustTake = true; console.log(boardArr[i]); console.log(arr[a]) }
-              else if(arr[a].color == 'dark'&& boardArr[i].currPieceLight == 1){darkMustTake = true; console.log(boardArr[i]); console.log(arr[a])}
+              if(arr[a].color == 'light' && boardArr[i].currPieceLight == -1){lightMustTake = true;  }
+              else if(arr[a].color == 'dark'&& boardArr[i].currPieceLight == 1){darkMustTake = true; }
               //This targets both elements ahead of checker of opposing value with an empty space ahead of them
             }
         }
