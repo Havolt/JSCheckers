@@ -8,6 +8,7 @@ let lightMustTake = false;
 let darkMustTake = false;
 let anotherMove = false;
 
+
 let whiteTurn = true;
 let direction;
 
@@ -136,12 +137,17 @@ function highlightMove(pieceInfo){
        else{pieceTakingDir = 1;}
 
         for(var n = 0; n < pieceInfo.oppColor.length; n++){
-          //console.log(pieceInfo.oppColor[n]);
-          if(pieceInfo.oppColor.tileLocation == boardArr[i].tileLocation){
+
+          if(boardArr[i].tileLocation == pieceInfo.oppColor[n].tileLocation){
+            takenPiece = boardArr[i];
+            console.log(boardArr[i])
+            console.log('takenPieceAbove');
+            console.log(takenPiece)
+            console.log('takenPieceFuck');
             takenPiece = n;
           }
+
         }
-        boardArr[i].tileLocation
 
        for(var j = 0; j < boardArr.length; j++){
          let holder = j;
@@ -182,12 +188,15 @@ function highlightMove(pieceInfo){
            else{pieceTakingDir = 1;}
 
            for(var n = 0; n < pieceInfo.oppColor.length; n++){
-             //console.log(pieceInfo.oppColor[n]);
-             if(pieceInfo.oppColor.tileLocation == boardArr[i].tileLocation){
+             if(boardArr[i].tileLocation == pieceInfo.oppColor[n].tileLocation){
+               takenPiece = boardArr[i];
+               console.log(boardArr[i])
+               console.log('takenPieceAbove');
+               console.log(takenPiece)
+               console.log('takenPieceFuck');
                takenPiece = n;
              }
            }
-           boardArr[i].tileLocation
 
            for(var j = 0; j < boardArr.length; j++){
              let holder = j;
@@ -218,7 +227,7 @@ function highlightMove(pieceInfo){
 
 
   //Piece unable to be taken
-    if((!pieceToTake) && ((whiteTurn && pieceInfo.color == 'light') || (!whiteTurn && pieceInfo.color == 'dark'))){
+    if((!pieceToTake) && (((whiteTurn && pieceInfo.color == 'light') && !lightMustTake) || ((!whiteTurn && pieceInfo.color == 'dark') && !darkMustTake ))){
       for(var i = 0; i < boardArr.length; i++){
         let holder = i;
         if((boardArr[i].x == pieceInfo.x+direction) && (boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)-1 ||
@@ -264,8 +273,6 @@ function highlightMove(pieceInfo){
 
 function updatePiece(checkerPos, tilePos, takenPos){
 
-  darkMustTake = false;
-  lightMustTake = false;
   anotherMove = false;
   for(var i = 0; i < boardArr.length;i++){
     if(checkerPos.tileLocation == boardArr[i].tileLocation){
@@ -305,11 +312,25 @@ function updatePiece(checkerPos, tilePos, takenPos){
     alert('Light Wins');
   }
 
-  currScan(checkerPos );
+  console.log(checkerPos)
+
+  /*
+  let runnForrest = 0;
+  for(var i = 0; i < darkArr.length; i++){
+    if(darkArr[i].x == 8 ){
+      runnForrest++;
+      console.log('fucking tell me')
+    }
+    if(runnForrest < 4 && i == darkArr.length-1){
+      alert('uh oh');
+    }
+  }
+  */
+
+  //currScan(checkerPos );
 
   if(!anotherMove){
     whiteTurn = !whiteTurn;
-    console.log('whiteTurn = ' + whiteTurn)
     if(whiteTurn){scanner(lightArr);}
     else{scanner(darkArr);}
   }
@@ -331,7 +352,7 @@ function scanner(arr){
   let pieceTakingDir;
 
   if(arr[0].color == 'light'){ direc = 1 }
-  else{ direc = -1; console.log('holy fuck ' + direc) }
+  else{ direc = -1;}
 
   for(var a = 0; a < arr.length; a++){
     for(var i = 0; i < boardArr.length; i++){
@@ -341,9 +362,10 @@ function scanner(arr){
          else{pieceTakingDir = 1;}
 
          for(var j = 0; j < boardArr.length; j++){
-           if((boardArr[j].x == arr[a].x+direc*2) && (boardArr[j].y.charCodeAt(0) == arr[a].y.charCodeAt(0)+(pieceTakingDir*2)) && boardArr[j].empty){
-              if(arr[a].color == 'light'){lightMustTake = true; }
-              else if(arr[a].color == 'dark'){darkMustTake = true}
+           if((boardArr[j].x == arr[a].x+(direc*2)) && (boardArr[j].y.charCodeAt(0) == arr[a].y.charCodeAt(0)+(pieceTakingDir*2)) && boardArr[j].empty){
+
+              if(arr[a].color == 'light' && boardArr[i].currPieceLight == -1){lightMustTake = true; console.log(boardArr[i]); console.log(arr[a]) }
+              else if(arr[a].color == 'dark'&& boardArr[i].currPieceLight == 1){darkMustTake = true; console.log(boardArr[i]); console.log(arr[a])}
               //This targets both elements ahead of checker of opposing value with an empty space ahead of them
             }
         }
@@ -353,7 +375,6 @@ function scanner(arr){
 
   //////////////
 
-  console.log(lightMustTake);
 }
 
 (function init(){
