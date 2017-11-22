@@ -374,7 +374,6 @@ function currScan(piece){
        if(boardArr[i].y.charCodeAt(0) < piece.y.charCodeAt(0)){pieceTakingDir2 = -1;}
        else{pieceTakingDir2 = 1;}
 
-       console.log(pieceTakingDir2)
 
        for(var j = 0; j < boardArr.length; j++){
 
@@ -396,6 +395,31 @@ function currScan(piece){
           }
        }
 
+     }
+
+     if(piece.crowned){
+       if((boardArr[i].x == piece.x-direction) && (boardArr[i].y.charCodeAt(0) == piece.y.charCodeAt(0)-1 ||
+        boardArr[i].y.charCodeAt(0) == piece.y.charCodeAt(0)+1) && (boardArr[i].currPieceLight == -piece.currPieceLight)){
+
+          if(boardArr[i].y.charCodeAt(0) < piece.y.charCodeAt(0)){pieceTakingDir2 = -1;}
+          else{pieceTakingDir2 = 1;}
+
+          for(var j = 0; j < boardArr.length; j++){
+            if((boardArr[j].x == piece.x+(-direction*2)) && (boardArr[j].y.charCodeAt(0) == piece.y.charCodeAt(0)+(pieceTakingDir2*2)) &&
+             boardArr[j].empty){
+               for(var n = 0; n < piece.oppColor.length; n++){
+                 if(boardArr[i].tileLocation == piece.oppColor[n].tileLocation){
+                   takenPieceArr.push(n);
+                 }
+               }
+
+               anotherMove = true;
+               anotherMoveArrTaken.push(boardArr[i]);
+               anotherMoveArr.push(boardArr[j]);
+               console.log('ermahgerd');
+             }
+          }
+        }
      }
   }
 }
