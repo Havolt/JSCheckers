@@ -9,7 +9,6 @@ let darkMustTake = false;
 let anotherMove = false;
 
 
-
 let whiteTurn = true;
 let direction;
 
@@ -26,6 +25,8 @@ let anotherMoveArr = [];
 let anotherMoveArrTaken = [];
 let takenPieceArr = [];
 
+
+//Creates information for objects within the boardArr array
 function createBoardArr(){
   for(var i = tileAmt; i >= 1; i--){
     for(var j = 1; j <= tileAmt; j++){
@@ -49,6 +50,7 @@ function createBoardArr(){
   }
 }
 
+//Creates both color arrays
 function createColorArr(color){
 
   if(color == 'light'){ runner = boardArr.length-1}
@@ -71,6 +73,7 @@ function createColorArr(color){
   }
 }
 
+//Creates the board from the boardArr array
 function buildBoard(){
   for(var i = 0; i < boardArr.length; i++){
     const deTile = document.createElement('div');
@@ -80,12 +83,14 @@ function buildBoard(){
   }
 }
 
+//Places  pieces in their initials positions on board
 function initPieceLoc(arr){
   for(var i = 0; i < arr.length; i++){
     buildPiece(arr[i]);
   }
 }
 
+//Function takes passed data value and turns it into pieces on board
 function buildPiece(piece){
 
   const tmpPce = document.createElement('div');
@@ -93,7 +98,6 @@ function buildPiece(piece){
   if(piece.color == 'light'){tmpPce.style.cursor="pointer"}
   tmpPce.id = piece.tileLocation + 'Piece';
 
-  console.log(anotherMove)
   if(!anotherMove){
     tmpPce.addEventListener('click', function(){movePiece(piece);})
 
@@ -116,6 +120,7 @@ function buildPiece(piece){
 
 }
 
+//Changes object values to corresponding new position values
 function movePiece(pieceInfo){
 
   if(!pieceSelectedBool || pieceSelectedInfo == pieceInfo){
@@ -127,8 +132,9 @@ function movePiece(pieceInfo){
   }
 }
 
-function highlightMove(pieceInfo){
 
+//Adds event listeners to spaces where movement is possible
+function highlightMove(pieceInfo){
 
   let pieceToTake = false;
   let pieceTakingDir = undefined;
@@ -156,11 +162,7 @@ function highlightMove(pieceInfo){
           boardArr[j].empty){
             for(var n = 0; n < pieceInfo.oppColor.length; n++){
               if(boardArr[i].tileLocation == pieceInfo.oppColor[n].tileLocation){
-                console.log('takenPieceBelow');
-                console.log(boardArr[i])
-                console.log('takenPieceAbove');
                 takenPiece = n;
-                console.log(takenPiece)
               }
             }
             let takenHolder = i;
@@ -171,7 +173,6 @@ function highlightMove(pieceInfo){
                 updatePiece(pieceInfo, boardArr[holder], boardArr[takenHolder], takenPiece);
               });
               pieceToTake = true;
-              console.log(pieceToTake + ' pieceToTake');
             }
             else{
               document.getElementById(boardArr[j].tileLocation+'Tile').style.backgroundColor="#A67D5D";
@@ -184,11 +185,9 @@ function highlightMove(pieceInfo){
         }
       }
 
-
       /////////////////////////////////////////
 
       if(pieceInfo.crowned){
-        console.log('jesus christ ' + pieceInfo.color)
         if((boardArr[i].x == pieceInfo.x-direction) && (boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)-1 ||
          boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+1) && (boardArr[i].currPieceLight == -pieceInfo.currPieceLight)){
            if(boardArr[i].y.charCodeAt(0) < pieceInfo.y.charCodeAt(0)){pieceTakingDir = -1;}
@@ -255,7 +254,6 @@ function highlightMove(pieceInfo){
              if(!pieceSelectedBool){
                highlightedTiles.push(boardArr[i]);
                document.getElementById(boardArr[i].tileLocation+'Tile').style.backgroundColor="#848EA1";
-               //console.log(boardArr[i]);
                document.getElementById(boardArr[i].tileLocation+'Tile').addEventListener('click', function(){updatePiece(pieceInfo, boardArr[holder])})
              }else{
                document.getElementById(boardArr[i].tileLocation+'Tile').style.backgroundColor="#A67D5D";
@@ -271,7 +269,7 @@ function highlightMove(pieceInfo){
   }
 
 
-
+//Function that gets event listener places on tiles and uses it to update values for involved pieces
 function updatePiece(checkerPos, tilePos, takenPos, takeThisPiece){
 
   anotherMove = false;
@@ -282,7 +280,6 @@ function updatePiece(checkerPos, tilePos, takenPos, takeThisPiece){
       boardArr[i].empty = true;
     }
   }
-
 
   document.getElementById(checkerPos.tileLocation+'Tile').removeChild(document.getElementById(checkerPos.tileLocation+'Tile').childNodes[0]);
   checkerPos.tileLocation = tilePos.tileLocation;
@@ -357,6 +354,8 @@ function updatePiece(checkerPos, tilePos, takenPos, takeThisPiece){
 
 }
 
+
+//Function allows for further moves upon capture of oppenent and further captures available
 function captureAgain(piece){
 
   for(var i = 0; i < anotherMoveArr.length; i++){
@@ -370,11 +369,10 @@ function captureAgain(piece){
 
 }
 
+
+//Scans board for further capture after first capture
 function currScan(piece){
 
-  console.log(piece);
-  console.log('my negroe');
-  console.log(direction)
   let pieceTakeDir2;
   anotherMove = false;
 
@@ -384,16 +382,12 @@ function currScan(piece){
        if(boardArr[i].y.charCodeAt(0) < piece.y.charCodeAt(0)){pieceTakingDir2 = -1;}
        else{pieceTakingDir2 = 1;}
 
-
        for(var j = 0; j < boardArr.length; j++){
 
          if((boardArr[j].x == piece.x+(direction*2)) && (boardArr[j].y.charCodeAt(0) == piece.y.charCodeAt(0)+(pieceTakingDir2*2)) &&
           boardArr[j].empty){
             for(var n = 0; n < piece.oppColor.length; n++){
               if(boardArr[i].tileLocation == piece.oppColor[n].tileLocation){
-                console.log('takenPieceBelow');
-                console.log(boardArr[i])
-                console.log('takenPieceAbove');
                 takenPieceArr.push(n);
               }
             }
@@ -401,7 +395,6 @@ function currScan(piece){
             anotherMove = true;
             anotherMoveArrTaken.push(boardArr[i]);
             anotherMoveArr.push(boardArr[j]);
-            console.log('ermahgerd');
           }
        }
 
@@ -426,7 +419,6 @@ function currScan(piece){
                anotherMove = true;
                anotherMoveArrTaken.push(boardArr[i]);
                anotherMoveArr.push(boardArr[j]);
-               console.log('ermahgerd');
              }
           }
         }
@@ -434,6 +426,8 @@ function currScan(piece){
   }
 }
 
+
+//Scans board for any available capture before movement
 function scanner(arr){
 
   lightMustTake = false;
@@ -458,7 +452,6 @@ function scanner(arr){
 
               if(arr[a].color == 'light' && boardArr[i].currPieceLight == -1){lightMustTake = true;  }
               else if(arr[a].color == 'dark'&& boardArr[i].currPieceLight == 1){darkMustTake = true;  }
-              //This targets both elements ahead of checker of opposing value with an empty space ahead of them
             }
         }
       }
@@ -484,6 +477,8 @@ function scanner(arr){
 
 }
 
+
+//Initializes everything
 (function init(){
   createBoardArr();
   createColorArr('light');
