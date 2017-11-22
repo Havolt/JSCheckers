@@ -1,5 +1,6 @@
 html, body{
   background-color: #f7f7f7;
+  font-family: arial, sans-serif;
 }
 
 #app{
@@ -46,5 +47,11 @@ html, body{
   width: 400px;
   height: 80px;
   background-color: #67759B;
-  margin: 0 auto;
+  margin: -10px auto;
+  border-radius: 12px;
+}
+
+#textMove{
+  padding-top: 8px;
+  text-align: center;
 }

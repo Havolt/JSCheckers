@@ -332,6 +332,7 @@ function updatePiece(checkerPos, tilePos, takenPos, takeThisPiece){
   buildPiece(checkerPos);
 
 
+
   //New Stuff
   if(lightArr.length == 0){
     alert('Dark Wins');
@@ -344,6 +345,7 @@ function updatePiece(checkerPos, tilePos, takenPos, takeThisPiece){
   else{
     if(!anotherMove){
       whiteTurn = !whiteTurn;
+      textHelp();
       if(whiteTurn){scanner(lightArr)}
       else{scanner(darkArr)}
     }
@@ -490,7 +492,15 @@ function textAr(){
 }
 
 function textHelp(){
-  document.getElementById('textMove').innerHTML = 'White Move';
+
+  if(whiteTurn){
+    document.getElementById('textMove').innerHTML = 'Light Move';
+    document.getElementById('textMove').style.color = "white";
+  }
+  else{
+    document.getElementById('textMove').innerHTML = 'Dark Move';
+    document.getElementById('textMove').style.color= 'black';
+  }
 }
 
 
