@@ -9,6 +9,7 @@ let darkMustTake = false;
 let anotherMove = false;
 
 
+
 let whiteTurn = true;
 let direction;
 
@@ -21,6 +22,9 @@ let boardArr = [];
 let lightArr = [];
 let darkArr = [];
 let highlightedTiles = [];
+let anotherMoveArr = [];
+let anotherMoveArrTaken = [];
+let takenPieceArr = [];
 
 function createBoardArr(){
   for(var i = tileAmt; i >= 1; i--){
@@ -277,9 +281,17 @@ function updatePiece(checkerPos, tilePos, takenPos, takeThisPiece){
   checkerPos.x = tilePos.x;
   checkerPos.y = tilePos.y;
 
+
   for(var i = 0; i < highlightedTiles.length; i++){
     document.getElementById(highlightedTiles[i].tileLocation+'Tile').style.backgroundColor="#A67D5D";
     let el = document.getElementById(highlightedTiles[i].tileLocation+'Tile');
+    let elClone = el.cloneNode(true);
+    app.replaceChild(elClone, el);
+  }
+
+  for(var i = 0; i < anotherMoveArr.length; i++){
+    document.getElementById(anotherMoveArr[i].tileLocation+'Tile').style.backgroundColor="#A67D5D";
+    let el = document.getElementById(anotherMoveArr[i].tileLocation+'Tile');
     let elClone = el.cloneNode(true);
     app.replaceChild(elClone, el);
   }
@@ -294,6 +306,9 @@ function updatePiece(checkerPos, tilePos, takenPos, takeThisPiece){
   if(checkerPos.color == 'dark' && checkerPos.x == 1){checkerPos.crowned = true;}
   tilePos.empty = false;
   highlightedTiles = [];
+  anotherMoveArr = [];
+  anotherMoveArrTaken = [];
+  takenPieceArr = [];
   pieceSelectedBool = false;
   pieceSelectedInfo = undefined;
 
@@ -305,7 +320,9 @@ function updatePiece(checkerPos, tilePos, takenPos, takeThisPiece){
     else{lightArr.splice(takeThisPiece, 1);}
   }
 
-  currScan(checkerPos);
+  if(takenPos){
+    currScan(checkerPos);
+  }
 
 
   //New Stuff
@@ -323,11 +340,23 @@ function updatePiece(checkerPos, tilePos, takenPos, takeThisPiece){
       if(whiteTurn){scanner(lightArr)}
       else{scanner(darkArr)}
     }
+    else {
+      captureAgain(checkerPos);
+    }
   }
 
+}
 
+function captureAgain(piece){
 
-
+  for(var i = 0; i < anotherMoveArr.length; i++){
+    let tempHold = i;
+    document.getElementById(anotherMoveArr[i].tileLocation+'Tile').style.backgroundColor="#848EA1";
+    document.getElementById(anotherMoveArr[i].tileLocation+'Tile').addEventListener('click', function(){
+      updatePiece(piece, anotherMoveArr[tempHold], anotherMoveArrTaken[tempHold], takenPieceArr[tempHold]);
+    });
+    pieceToTake = true;
+  }
 
 }
 
@@ -351,7 +380,18 @@ function currScan(piece){
 
          if((boardArr[j].x == piece.x+(direction*2)) && (boardArr[j].y.charCodeAt(0) == piece.y.charCodeAt(0)+(pieceTakingDir2*2)) &&
           boardArr[j].empty){
-            //anotherMove = true;
+            for(var n = 0; n < piece.oppColor.length; n++){
+              if(boardArr[i].tileLocation == piece.oppColor[n].tileLocation){
+                console.log('takenPieceBelow');
+                console.log(boardArr[i])
+                console.log('takenPieceAbove');
+                takenPieceArr.push(n);
+              }
+            }
+
+            anotherMove = true;
+            anotherMoveArrTaken.push(boardArr[i]);
+            anotherMoveArr.push(boardArr[j]);
             console.log('ermahgerd');
           }
        }
