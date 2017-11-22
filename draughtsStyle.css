@@ -41,3 +41,10 @@ html, body{
 .lightPiece{
   background-color: #F4C242;
 }
+
+#textArea{
+  width: 400px;
+  height: 80px;
+  background-color: #67759B;
+  margin: 0 auto;
+}

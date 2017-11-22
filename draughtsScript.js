@@ -477,6 +477,22 @@ function scanner(arr){
 
 }
 
+function textAr(){
+  const textArea1 = document.createElement('div');
+  textArea1.id = "textArea";
+  document.body.appendChild(textArea1);
+  const textMover = document.createElement('h1');
+  textMover.id = 'textMove';
+  textArea1.appendChild(textMover);
+  const textMandatory = document.createElement('h2');
+  textMandatory.id = "textMand";
+  textArea1.appendChild(textMandatory);
+}
+
+function textHelp(){
+  document.getElementById('textMove').innerHTML = 'White Move';
+}
+
 
 //Initializes everything
 (function init(){
@@ -486,4 +502,6 @@ function scanner(arr){
   buildBoard();
   initPieceLoc(lightArr);
   initPieceLoc(darkArr);
+  textAr();
+  textHelp();
 })()
