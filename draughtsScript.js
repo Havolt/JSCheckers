@@ -137,6 +137,7 @@ function highlightMove(pieceInfo){
        if(boardArr[i].y.charCodeAt(0) < pieceInfo.y.charCodeAt(0)){pieceTakingDir = -1;}
        else{pieceTakingDir = 1;}
 
+
        for(var j = 0; j < boardArr.length; j++){
          let holder = j;
          if((boardArr[j].x == pieceInfo.x+(direction*2)) && (boardArr[j].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+(pieceTakingDir*2)) &&
@@ -180,6 +181,7 @@ function highlightMove(pieceInfo){
          boardArr[i].y.charCodeAt(0) == pieceInfo.y.charCodeAt(0)+1) && (boardArr[i].currPieceLight == -pieceInfo.currPieceLight)){
            if(boardArr[i].y.charCodeAt(0) < pieceInfo.y.charCodeAt(0)){pieceTakingDir = -1;}
            else{pieceTakingDir = 1;}
+
 
            for(var j = 0; j < boardArr.length; j++){
              let holder = j;
@@ -303,6 +305,8 @@ function updatePiece(checkerPos, tilePos, takenPos, takeThisPiece){
     else{lightArr.splice(takeThisPiece, 1);}
   }
 
+  currScan(checkerPos);
+
 
   //New Stuff
   if(lightArr.length == 0){
@@ -322,15 +326,37 @@ function updatePiece(checkerPos, tilePos, takenPos, takeThisPiece){
   }
 
 
-  //currScan(checkerPos );
+
 
 
 }
 
 function currScan(piece){
 
-  if(1 == 2){
-    anotherMove = true;
+  console.log(piece);
+  console.log('my negroe');
+  console.log(direction)
+  let pieceTakeDir2;
+  anotherMove = false;
+
+  for(var i = 0; i < boardArr.length; i++){
+    if((boardArr[i].x == piece.x+direction) && (boardArr[i].y.charCodeAt(0) == piece.y.charCodeAt(0)-1 ||
+     boardArr[i].y.charCodeAt(0) == piece.y.charCodeAt(0)+1) && (boardArr[i].currPieceLight == -piece.currPieceLight)){
+       if(boardArr[i].y.charCodeAt(0) < piece.y.charCodeAt(0)){pieceTakingDir2 = -1;}
+       else{pieceTakingDir2 = 1;}
+
+       console.log(pieceTakingDir2)
+
+       for(var j = 0; j < boardArr.length; j++){
+
+         if((boardArr[j].x == piece.x+(direction*2)) && (boardArr[j].y.charCodeAt(0) == piece.y.charCodeAt(0)+(pieceTakingDir2*2)) &&
+          boardArr[j].empty){
+            //anotherMove = true;
+            console.log('ermahgerd');
+          }
+       }
+
+     }
   }
 }
 
