@@ -92,7 +92,15 @@ function buildPiece(piece){
   tmpPce.classList = "allPiece " + piece.color + "Piece";
   if(piece.color == 'light'){tmpPce.style.cursor="pointer"}
   tmpPce.id = piece.tileLocation + 'Piece';
-  tmpPce.addEventListener('click', function(){movePiece(piece);})
+
+  console.log(anotherMove)
+  if(!anotherMove){
+    tmpPce.addEventListener('click', function(){movePiece(piece);})
+
+  }
+  else{
+    tmpPce.style.boxShadow="3px 3px 2px black";
+  }
   if(piece.crowned){
     tmpPce.innerHTML = "&#9813";
   }
@@ -313,7 +321,7 @@ function updatePiece(checkerPos, tilePos, takenPos, takeThisPiece){
   pieceSelectedInfo = undefined;
 
 
-  buildPiece(checkerPos);
+
 
   if(takenPos){
     if(checkerPos.color == 'light'){darkArr.splice(takeThisPiece, 1);}
@@ -323,6 +331,8 @@ function updatePiece(checkerPos, tilePos, takenPos, takeThisPiece){
   if(takenPos){
     currScan(checkerPos);
   }
+
+  buildPiece(checkerPos);
 
 
   //New Stuff
